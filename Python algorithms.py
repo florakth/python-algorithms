@@ -85,3 +85,56 @@ def repeatedString(s, n):
             num_last += 1
     return num*r + num_last
 
+
+
+class LeagueTable:
+    def __init__(self, players):
+        self.standings = OrderedDict([(player, Counter()) for player in players])
+       
+    def record_result(self, player, score):
+        self.standings[player]['games_played'] += 1
+        self.standings[player]['score'] += score
+      
+    def player_rank(self, rank):
+
+        sorted_dict = sorted(
+            self.standings.items(),
+            
+            key = lambda kv: (-kv[1]['score'],
+                              kv[1]['games_played'],),
+            reverse=False)
+                
+        return sorted_dict[rank-1][0]
+      
+table = LeagueTable(['Mike', 'Chris', 'Arnold'])
+table.record_result('Mike', 2)
+table.record_result('Mike', 3)
+table.record_result('Arnold', 5)
+table.record_result('Chris', 5)
+print(table.player_rank(1))
+
+
+# Binary Search Tree
+import collections
+
+Node = collections.namedtuple('Node', ['left', 'right', 'value'])
+
+def contains(root, value):
+    if root.value == value:
+        return True
+    elif root.value < value:
+        if root.right == None:
+            return False
+        else:
+            return contains(root.right,value)
+    else:
+        if root.left == None:
+            return False
+        else:
+            return contains(root.left,value)
+        
+n1 = Node(value=1, left=None, right=None)
+n3 = Node(value=3, left=None, right=None)
+n2 = Node(value=2, left=n1, right=n3)
+        
+print(contains(n2, 3))
